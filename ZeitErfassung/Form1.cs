@@ -16,9 +16,10 @@ namespace ZeitErfassung
         public TimeSpan breakStart;
         public TimeSpan breakEnd;
         public TimeSpan End;
-        public TimeSpan addBreak;
         public TimeSpan addHours;
         public TimeSpan leaveTime;
+        public TimeSpan totalBreakTime;
+        public List<TimeSpan> addBreakList = new List<TimeSpan>();
         public Form1()
         {
             InitializeComponent();
@@ -26,8 +27,20 @@ namespace ZeitErfassung
         public void calculateBs()
         {
             addHours = new TimeSpan(8, 0, 0);
-            addBreak = (breakStart - breakEnd).Negate();
-            leaveTime = Start.Add(addHours).Add(addBreak);
+            if (addBreakList != null)
+            {
+                foreach (TimeSpan t in addBreakList)
+                {
+                    totalBreakTime += t;
+                }
+                TimeSpan leaveTimeWithNoBreak = Start.Add(addHours);
+                leaveTime = leaveTimeWithNoBreak + totalBreakTime;
+                totalBreakTime = TimeSpan.Parse("00:00:00");
+            }
+            else
+            {
+                leaveTime = Start.Add(addHours);
+            }
             LeaveTime.Value = DateTime.Parse(leaveTime.ToString());
         }
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
@@ -42,10 +55,27 @@ namespace ZeitErfassung
             form2.ShowDialog();
             if (breakStart != null && breakEnd != null)
             {
-                calculateBs();
+                Breaks breaks = new Breaks();
+                breaks.StartTime = breakStart;
+                breaks.EndTime = breakEnd;
+                breaks.timeSpanList = addBreakList;
+                breaks.addBreaks();
                 breakStartLabel.Text = Convert.ToString(breakStart);
                 breakEndLabel.Text = Convert.ToString(breakEnd);
             }
+            calculateBs();
+        }
+    }
+    class Breaks
+    {
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
+        public List<TimeSpan> timeSpanList { get; set; }
+        public void addBreaks()
+        {
+            TimeSpan addBreak = (StartTime - EndTime).Negate();
+
+            timeSpanList.Add(addBreak);
         }
     }
 }
