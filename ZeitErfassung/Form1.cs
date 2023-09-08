@@ -60,8 +60,28 @@ namespace ZeitErfassung
                 breaks.EndTime = breakEnd;
                 breaks.timeSpanList = addBreakList;
                 breaks.addBreaks();
-                breakStartLabel.Text = Convert.ToString(breakStart);
-                breakEndLabel.Text = Convert.ToString(breakEnd);
+
+                for (int i = 0; i = (addBreakList + 1); i++)
+                {
+                    // 
+                    // breakStartLabel
+                    // 
+                    breakStartLabel[addBreakList.Count].AutoSize = true;
+                breakStartLabel[addBreakList.Count].Location = new System.Drawing.Point(24, 53);
+                breakStartLabel[addBreakList.Count].Name = "breakStartLabel";
+                breakStartLabel[addBreakList.Count].Size = new System.Drawing.Size(0, 13);
+                breakStartLabel[addBreakList.Count].TabIndex = 3;
+                // 
+                // breakEndLabel
+                // 
+                breakEndLabel[addBreakList.Count].AutoSize = true;
+                breakEndLabel[addBreakList.Count].Location = new System.Drawing.Point(24, 81);
+                breakEndLabel[addBreakList.Count].Name = "breakEndLabel";
+                breakEndLabel[addBreakList.Count].Size = new System.Drawing.Size(0, 13);
+                breakEndLabel[addBreakList.Count].TabIndex = 4;
+
+                breakStartLabel[addBreakList.Count].Text = Convert.ToString(breakStart);
+                breakEndLabel[addBreakList.Count].Text = Convert.ToString(breakEnd);
             }
             calculateBs();
         }
