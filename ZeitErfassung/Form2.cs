@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,20 +14,26 @@ namespace ZeitErfassung
     public partial class Form2 : Form
     {
         public Form1 frm;
+        public int time;
         public Form2(Form1 form1)
         {
             InitializeComponent();
             frm = form1;
         }
 
-        private void breakStartPicker_ValueChanged(object sender, EventArgs e)
+        public void hours_TextChanged(object sender, EventArgs e)
         {
-            frm.breakStart = breakStartPicker.Value.TimeOfDay;
+            try
+            {
+                silly_error_label.Text = "";
+                time = int.Parse(hours.Text);
+            }
+            catch
+            {
+                silly_error_label.Text = "pwease enter valid time >:(";
+                hours.Text = "";
+            }
         }
 
-        private void breakEndPicker_ValueChanged(object sender, EventArgs e)
-        {
-            frm.breakEnd = breakEndPicker.Value.TimeOfDay;
-        }
     }
 }
